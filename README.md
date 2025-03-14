@@ -9,7 +9,7 @@ Refer to the [documentation](https://lazyvim.github.io/installation) to get star
 ```
 lang.php, coding.nvim-cmp, lang.tailwind
 ```
-#### phpactor
+#### Phpactor
 ```
 composer global require phpactor/phpactor
 ```
