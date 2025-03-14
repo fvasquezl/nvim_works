@@ -7,14 +7,14 @@ Refer to the [documentation](https://lazyvim.github.io/installation) to get star
 
 #### Usando "LazyExtras" instalar
 ```
-PHP, Coding.nvim-cmp, lang.tailwind 
+lang.php, coding.nvim-cmp, lang.tailwind
 ```
-### phpactor
+#### phpactor
 ```
 composer global require phpactor/phpactor
 ```
 
-### Para trabajar con Laravel, necesitas algunos paquetes adicionales que complementen la funcionalidad de Phpactor:
+#### Para trabajar con Laravel, necesitas algunos paquetes adicionales que complementen la funcionalidad de Phpactor:
 ```
 composer require --dev barryvdh/laravel-ide-helper
 php artisan ide-helper:generate
@@ -22,18 +22,18 @@ php artisan ide-helper:meta
 php artisan ide-helper:models -N
 ```
 
-### Si usas Pest para pruebas, instálalo en tu proyecto:
+#### Si usas Pest para pruebas, instálalo en tu proyecto:
 ```
 composer require pestphp/pest --dev
 ```
-### Formatear con Pint
+#### Formatear con Pint
 ```
 composer remove friendsofphp/php-cs-fixer --dev
 composer require laravel/pint --dev
 ./vendor/bin/pint
 ```
 
-### Crea un archivo pint.json en raiz del proyecto
+#### Crea un archivo pint.json en raiz del proyecto
 ```
 {
   "preset": "laravel",
