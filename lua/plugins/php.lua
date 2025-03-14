@@ -7,7 +7,7 @@ return {
       opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
         "phpcs", -- Linter
         "php-cs-fixer", -- Formateador
-        "intelephense", -- LSP
+        -- "intelephense", -- LSP
         "tailwindcss-language-server", -- TailwindCSS LSP
         "php-debug-adapter", -- Depurador
       })
@@ -34,22 +34,14 @@ return {
     "stevearc/conform.nvim",
     opts = function(_, opts)
       opts.formatters_by_ft = vim.tbl_deep_extend("force", opts.formatters_by_ft or {}, {
-        php = { "pint", "php_cs_fixer" }, -- Usa Pint y PHP-CS-Fixer
+        php = { "pint" },
       })
 
       opts.formatters = vim.tbl_deep_extend("force", opts.formatters or {}, {
         pint = {
-          command = "pint",
+          command = "./vendor/bin/pint", -- Ruta al binario de Laravel Pint
           args = { "$FILENAME" },
           stdin = false,
-        },
-        php_cs_fixer = {
-          command = "php-cs-fixer",
-          args = { "fix", "$FILENAME", "--config", ".php-cs-fixer.php" },
-          stdin = false,
-          env = {
-            PHP_CS_FIXER_IGNORE_ENV = "1", -- Ignorar la restricción de versión
-          },
         },
       })
     end,
@@ -63,5 +55,43 @@ return {
         php = { "phpcs" }, -- Usa PHPCS como linter
       })
     end,
+  },
+
+  -- Configuración de null-ls.nvim para Laravel Pint
+  {
+    "jose-elias-alvarez/null-ls.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = function()
+      local null_ls = require("null-ls")
+      return {
+        sources = {
+          -- Laravel Pint para proyectos Laravel
+          null_ls.builtins.formatting.pint.with({
+            command = "./vendor/bin/pint", -- Ruta relativa al root del proyecto
+            extra_args = {},
+          }),
+        },
+        root_dir = require("null-ls.utils").root_pattern("composer.json"),
+      }
+    end,
+  },
+
+  -- Configuración de formatter.nvim
+  {
+    "mhartington/formatter.nvim",
+    opts = {
+      filetype = {
+        php = {
+          function()
+            return {
+              exe = "./vendor/bin/pint", -- Ruta al binario de Laravel Pint
+              args = {}, -- Argumentos adicionales
+              stdin = true, -- Usa stdin para pasar el archivo
+              cwd = vim.fn.getcwd(), -- Usa el directorio actual como root
+            }
+          end,
+        },
+      },
+    },
   },
 }
